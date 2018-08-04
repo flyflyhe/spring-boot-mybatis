@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="logdb.mappers.UserMapper">
+    <select id="select" parameterType="int" resultType="logdb.model.User">
+        SELECT * FROM user WHERE ID = #{id}
+    </select>
+
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="logdb.model.User">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into user (username, password, sex, age)
+        values (#{username},#{password},#{sex},#{age})
+  </insert>
+</mapper>
