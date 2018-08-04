@@ -7,6 +7,18 @@
         SELECT * FROM user WHERE ID = #{id}
     </select>
 
+    <resultMap type="logdb.model.User" id="users">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+    </resultMap>
+
+    <!--返回resultMap 会被自动转换为list-->
+    <select id="findAll"  resultMap="logdb.model.User">
+        SELECT * FROM user ORDER BY id desc limit 10;
+    </select>
 
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="logdb.model.User">
