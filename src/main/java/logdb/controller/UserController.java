@@ -16,8 +16,8 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public List<User> index() throws Exception {
-        SqlSession session = SqlSessionConfig.getMybatisSession();
+    public List<User> index(SqlSession session) throws Exception {
+        //SqlSession session = SqlSessionConfig.getMybatisSession();
         //UserMapper useDao = session.getMapper(UserMapper.class);
         /*List<User> userList = new ArrayList<User>();
         userList.add(session.selectOne("select", 1));*/
