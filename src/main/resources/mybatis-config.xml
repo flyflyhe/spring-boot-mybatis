@@ -17,6 +17,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="UserMapper.xml"/>
+        <mapper class="logdb.mapper.UserMapper"/>
     </mappers>
 </configuration>
