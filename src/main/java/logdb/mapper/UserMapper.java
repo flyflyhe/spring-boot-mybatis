@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface UserMapper {
     List<User> findAll();
-    int select(int id);
+    User select(int id);
+    int delete(int id);
 }

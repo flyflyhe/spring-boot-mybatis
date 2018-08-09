@@ -25,5 +25,9 @@
         </selectKey>
         insert into user (username, password, sex, age)
         values (#{username},#{password},#{sex},#{age})
-  </insert>
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM user where id = #{id}
+    </delete>
 </mapper>

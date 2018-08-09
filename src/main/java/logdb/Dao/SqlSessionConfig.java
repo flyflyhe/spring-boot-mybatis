@@ -14,9 +14,6 @@ import java.io.InputStream;
 @Configuration
 public class SqlSessionConfig {
 
-    @Bean
-    @Primary
-    @Scope("prototype")
     public static SqlSession getMybatisSession()
             throws Exception {
         String resource = "mybatis-config.xml";

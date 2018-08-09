@@ -1,6 +1,7 @@
 package logdb.controller;
 
 
+import jdk.internal.module.ModuleLoaderMap;
 import logdb.Dao.SqlSessionConfig;
 import logdb.mapper.UserMapper;
 import logdb.model.User;
@@ -12,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @ResponseBody
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> index() throws Exception {
         SqlSession session = SqlSessionConfig.getMybatisSession();
         UserMapper useDao = session.getMapper(UserMapper.class);
@@ -25,7 +27,17 @@ public class UserController {
         return  useDao.findAll();
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public User findOne(@PathVariable int id) throws Exception {
+        SqlSession session = SqlSessionConfig.getMybatisSession();
+        UserMapper useDao = session.getMapper(UserMapper.class);
+        /*List<User> userList = new ArrayList<User>();
+        userList.add(session.selectOne("select", 1));*/
+        //return session.selectList("findAll");
+        return  useDao.select(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
     public User create(@Valid @ModelAttribute User user) throws Exception {
         SqlSession session = SqlSessionConfig.getMybatisSession();
         int id = user.create(session);
@@ -34,5 +46,18 @@ public class UserController {
             return user;
         }
         throw new Exception("error");
+    }
+
+    @RequestMapping(value = "/{id:[0-9]+}", method = RequestMethod.DELETE)
+    public User deleteOne(@PathVariable("id") int id) throws Exception {
+        SqlSession session = SqlSessionConfig.getMybatisSession();
+        UserMapper userMapper = session.getMapper(UserMapper.class);
+        User user = userMapper.select(id);
+        if (user != null && user.getId() == id) {
+            if (userMapper.delete(id) > 0) {
+                return null;
+            }
+        }
+        throw new Exception("删除失败");
     }
 }

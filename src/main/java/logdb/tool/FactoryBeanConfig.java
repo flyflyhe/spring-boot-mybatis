@@ -16,7 +16,7 @@ public class FactoryBeanConfig {
         return factory;
     }
 
-   /* public Tool tool() throws Exception {
+    public Tool tool() throws Exception {
         return toolFactory().getObject();
-    }*/
+    }
 }
