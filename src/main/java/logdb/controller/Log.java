@@ -1,4 +1,4 @@
-package logdb.tool;
+package logdb.controller;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
