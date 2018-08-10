@@ -15,8 +15,4 @@ public class FactoryBeanConfig {
         factory.setToolId(2);
         return factory;
     }
-
-    public Tool tool() throws Exception {
-        return toolFactory().getObject();
-    }
 }

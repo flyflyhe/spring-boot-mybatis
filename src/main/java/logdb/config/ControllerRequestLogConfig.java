@@ -1,4 +1,4 @@
-package logdb.controller;
+package logdb.config;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @Aspect
 @Component
-public class Log {
+public class ControllerRequestLogConfig {
     private Logger logger = Logger.getLogger(getClass());
 
     @Pointcut("execution(public * logdb.controller.*.*(..))")

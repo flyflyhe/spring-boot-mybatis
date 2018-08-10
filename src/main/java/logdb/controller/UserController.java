@@ -1,15 +1,13 @@
 package logdb.controller;
 
 
-import jdk.internal.module.ModuleLoaderMap;
-import logdb.Dao.SqlSessionConfig;
+import logdb.Dao.DbConnectionFactory;
 import logdb.mapper.UserMapper;
 import logdb.model.User;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,7 +17,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public List<User> index() throws Exception {
-        SqlSession session = SqlSessionConfig.getMybatisSession();
+        SqlSession session = DbConnectionFactory.getMybatisSession();
         UserMapper useDao = session.getMapper(UserMapper.class);
         /*List<User> userList = new ArrayList<User>();
         userList.add(session.selectOne("select", 1));*/
@@ -29,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User findOne(@PathVariable int id) throws Exception {
-        SqlSession session = SqlSessionConfig.getMybatisSession();
+        SqlSession session = DbConnectionFactory.getMybatisSession();
         UserMapper useDao = session.getMapper(UserMapper.class);
         /*List<User> userList = new ArrayList<User>();
         userList.add(session.selectOne("select", 1));*/
@@ -39,7 +37,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public User create(@Valid @ModelAttribute User user) throws Exception {
-        SqlSession session = SqlSessionConfig.getMybatisSession();
+        SqlSession session = DbConnectionFactory.getMybatisSession();
         int id = user.create(session);
         if (id > 0) {
             user.setId(id);
@@ -50,7 +48,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id:[0-9]+}", method = RequestMethod.DELETE)
     public User deleteOne(@PathVariable("id") int id) throws Exception {
-        SqlSession session = SqlSessionConfig.getMybatisSession();
+        SqlSession session = DbConnectionFactory.getMybatisSession();
         UserMapper userMapper = session.getMapper(UserMapper.class);
         User user = userMapper.select(id);
         if (user != null && user.getId() == id) {

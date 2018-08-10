@@ -8,6 +8,9 @@ import org.springframework.lang.Nullable;
 
 import java.io.InputStream;
 
+/**
+ * 不能注册为bean的原因SqlSession是个接口
+ */
 public class SingleSqlSessionFactory extends AbstractFactoryBean<SqlSession>{
 
     @Nullable
