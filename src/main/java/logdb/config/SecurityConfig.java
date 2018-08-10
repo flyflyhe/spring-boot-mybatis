@@ -8,13 +8,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,15 +35,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic();
     }
 
-    @Override
+   /* @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
                 .passwordEncoder(new PasswordEncoderDev())
                 .withUser("test").password("test").roles(ROLE_USER);
+    }*/
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .userDetailsService(new UserDetailsServiceImpl()).passwordEncoder(new PasswordEncoderImpl());
     }
 
-    private class PasswordEncoderDev implements PasswordEncoder {
+    private class UserDetailsServiceImpl implements UserDetailsService {
+
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority(ROLE_USER));
+
+            return new User("test", "test", authorities);
+        }
+    }
+
+    private class PasswordEncoderImpl implements PasswordEncoder {
         @Override
         public String encode(CharSequence rawPassword) {
             return rawPassword.toString();
