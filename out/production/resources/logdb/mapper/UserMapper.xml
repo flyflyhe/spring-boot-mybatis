@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="logdb.mapper.UserMapper">
+    <select id="select" parameterType="int" resultType="logdb.model.User">
+        SELECT * FROM user WHERE ID = #{id}
+    </select>
+
+    <resultMap type="logdb.model.User" id="users">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+    </resultMap>
+
+    <select id="findAll"  resultType="logdb.model.User">
+        SELECT * FROM user ORDER BY id desc limit 10;
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="logdb.model.User">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into user (username, password, sex, age)
+        values (#{username},#{password},#{sex},#{age})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM user where id = #{id}
+    </delete>
+</mapper>
