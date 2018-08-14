@@ -4,22 +4,32 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <context:component-scan base-package="logdb" />
-    <context:property-placeholder location="classpath:redis.properties"
-                                  ignore-unresolvable="true" />
+    <!-- spring的属性加载器，加载properties文件中的属性 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>redis.properties</value>
+        </property>
+        <property name="fileEncoding" value="utf-8" />
+    </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" primary="true" name="jedisPoolConfig">
-        <property name="maxTotal">
-            <value>${redis.pool.maxActive}</value>
-        </property>
-        <property name="maxIdle">
-            <value>${redis.pool.maxIdle}</value>
-        </property>
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" primary="true">
+        <property name="maxTotal" value="${redis.pool.maxTotal}" />
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
         <property name="testOnBorrow" value="true"/>
         <property name="testOnReturn" value="true"/>
     </bean>
 
-    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" primary="true" name="shardedJedisPool">
+    <bean id = "jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1" value="${redis.host}"/>
+        <constructor-arg index="2" value="${redis.port}" type="int"/>
+        <constructor-arg index="3" value="${redis.timeout}" type="int"/>
+        <constructor-arg index="4" value="${redis.password}"/>
+    </bean>
+
+
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" primary="true">
         <constructor-arg index="0" ref="jedisPoolConfig" />
         <constructor-arg index="1">
             <list>

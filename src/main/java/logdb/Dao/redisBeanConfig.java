@@ -1,3 +1,4 @@
+/*
 package logdb.Dao;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -53,3 +54,4 @@ public class redisBeanConfig {
         return shardedJedis;
     }
 }
+*/
