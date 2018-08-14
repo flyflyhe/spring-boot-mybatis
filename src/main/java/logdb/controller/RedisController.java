@@ -9,8 +9,12 @@ import redis.clients.jedis.*;
 @RequestMapping("/redis")
 public class RedisController {
 
+    private ShardedJedisPool shardedJedisPool;
+
     @Autowired //为啥放到
-    ShardedJedisPool shardedJedisPool;
+    public RedisController(ShardedJedisPool shardedJedisPool) {
+        this.shardedJedisPool = shardedJedisPool;
+    }
 
     @RequestMapping("/get")
     public String get(JedisPool jedisPool) {
